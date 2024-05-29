@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Category List {% endblock %}
+
+{% block content %}
+	<div class="container my-3">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.created_at }}</td>
+                                <td>
+                                    <a href="{% url 'todo:category-edit' category.id %}" class="btn btn-warning">Edit</a>
+                                    <a href="{% url 'todo:category-delete-confirmation' category.id %}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'todo:category-create' %}" class="btn btn-primary">Add Another Category</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

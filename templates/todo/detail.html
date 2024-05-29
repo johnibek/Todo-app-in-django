@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Todo Item Detail {% endblock %}
+
+{% block content %}
+	<div class="container my-3">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="card">
+                    <div class="card-header fs-3 fw-bold" style="background-color: lightgrey">
+                        Todo Item Detail
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">{{ todo_item.body }}</h5>
+                        <p class="card-text">
+                            <small class="text-muted"><b>Created at: </b>{{ todo_item.datetime | date:"d-m-Y" }}</small><br>
+                            <small class="text-muted"><b>Deadline: </b>{{ todo_item.deadline | date:"d-m-Y" }}</small>
+                        </p>
+                        <a href="{% url 'todo:home' %}" class="btn btn-primary">All Items</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

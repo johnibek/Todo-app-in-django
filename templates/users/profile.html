@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="card">
+                    <div class="card-header fs-2 fw-bold">
+                        {{ user.username }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>Username:</b> {{ user.username }}<br>
+                            <b>First Name:</b> {{ user.first_name }}<br>
+                            <b>Last Name:</b> {{ user.last_name }}<br>
+                            <b>Email Address:</b> {{ user.email }}
+                        </p>
+                        <a href="{% url 'users:profile-edit' %}" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

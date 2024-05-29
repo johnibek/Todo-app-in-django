@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+	<div class="container">
+        <!--Search functionality-->
+        <div class="row my-2 d-flex justify-content-center">
+            <div class="col-5">
+                <form method="get" class="d-flex">
+                    <input type="search" placeholder="Search" class="form-control border-end-0 border rounded-pill" name="q" value="{{ search_query }}">
+                    <button class="btn btn-primary border rounded-pill ms-1"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-10 offset-1">
+                <ul class="list-group mt-3">
+                    {% for todo_item in page_obj %}
+                        <li class="list-group-item list-group-item-success d-flex justify-content-between align-items-start mb-1">
+                            <div class="p-2 d-flex align-items-center">
+                                <a href="{% url 'todo:detail' todo_item.id %}" style="text-decoration: none; color: #153676"><b>{{ todo_item.body | truncatechars:"50" }}</b></a>
+                                <span style="position: absolute; right: 5px;">
+                                    <small class="me-3"><b>Created date:</b> {{ todo_item.datetime | date:"d-m-Y" }} - <b>Deadline date:</b> {{ todo_item.deadline | date:"d-m-Y" }}</small>
+                                    <a href="{% url 'todo:edit' todo_item.id %}" class="btn btn-success"><i class="bi bi-pen"></i></a>
+                                    <a href="{% url 'todo:delete-confirmation' todo_item.id %}" class="btn btn-danger"><i class="bi bi-trash3-fill"></i></a>
+                                    {% if todo_item.done %}
+                                        <a class="btn btn-secondary disabled">Done</a>
+                                    {% else %}
+                                        <a href="{% url 'todo:done' todo_item.id %}" class="btn btn-warning">Done</a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a href="?page=1&page_size={{ page_size }}" class="page-link">&laquo; First</a>
+                </li>
+                <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}&page_size={{ page_size }}" class="page-link">Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">&laquo; First</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+            {% endif %}
+
+            {% for page_number in page_obj.paginator.page_range %}
+                {% if page_obj.number == page_number %}
+                    <li class="page-item active">
+                        <a href="?page={{ page_number }}&page_size={{ page_size }}" class="page-link">{{ page_number }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ page_number }}&page_size={{ page_size }}" class="page-link">{{ page_number }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.next_page_number }}&page_size={{ page_size }}" class="page-link">Next</a>
+                </li>
+                <li class="page-item">
+                    <a href="?page={{ page_obj.paginator.num_pages }}&page_size={{ page_size }}" class="page-link">Last &raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link">Last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
